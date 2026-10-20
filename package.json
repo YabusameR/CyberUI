@@ -23,6 +23,7 @@
   "scripts": {
     "dev": "vite --config vite.demo.config.ts",
     "build": "vite build && tsc -p tsconfig.build.json && cp src/styles/fui.css dist/fui-ui.css",
+    "prepare": "npm run build",
     "build:demo": "vite build --config vite.demo.config.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
