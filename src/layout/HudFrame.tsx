@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useBootStep } from '../core/boot';
 import { cx, useElementSize } from '../core/hooks';
+import { useFuiStyles } from '../core/styles';
 
 export type FuiTone = 'cyan' | 'magenta' | 'amber' | 'danger' | 'success';
 
@@ -32,6 +33,7 @@ function bracketPath(w: number, h: number, len: number, inset: number) {
 
 /** Chamfered SVG frame with brackets and a stroke-draw boot animation. */
 export function HudFrame({ chamfer = 18, brackets = true, animatedBorder = false, tone, className, style, children, ...rest }: HudFrameProps) {
+  useFuiStyles();
   const [sizeRef, { width, height }] = useElementSize<HTMLDivElement>();
   const bootRef = useRef<HTMLDivElement>(null);
   const boot = useBootStep(bootRef);

@@ -24,15 +24,15 @@
 }
 
 /* ---------- Theme & tones ---------- */
-.fui-root[data-fui-theme='magenta'] { --fui-accent-rgb: var(--fui-magenta-rgb); }
-.fui-root[data-fui-theme='amber'] { --fui-accent-rgb: var(--fui-amber-rgb); }
+.fui-root[data-fui-theme='magenta'] { --fui-accent-rgb: var(--fui-magenta-rgb); --fui-accent: rgb(var(--fui-accent-rgb)); }
+.fui-root[data-fui-theme='amber'] { --fui-accent-rgb: var(--fui-amber-rgb); --fui-accent: rgb(var(--fui-accent-rgb)); }
 
-[data-tone='cyan'] { --fui-accent-rgb: var(--fui-cyan-rgb); }
-[data-tone='magenta'] { --fui-accent-rgb: var(--fui-magenta-rgb); }
-[data-tone='amber'] { --fui-accent-rgb: var(--fui-amber-rgb); }
-[data-tone='danger'] { --fui-accent-rgb: var(--fui-danger-rgb); }
-[data-tone='success'] { --fui-accent-rgb: var(--fui-success-rgb); }
-[data-tone='muted'] { --fui-accent-rgb: var(--fui-muted-rgb); }
+[data-tone='cyan'] { --fui-accent-rgb: var(--fui-cyan-rgb); --fui-accent: rgb(var(--fui-accent-rgb)); }
+[data-tone='magenta'] { --fui-accent-rgb: var(--fui-magenta-rgb); --fui-accent: rgb(var(--fui-accent-rgb)); }
+[data-tone='amber'] { --fui-accent-rgb: var(--fui-amber-rgb); --fui-accent: rgb(var(--fui-accent-rgb)); }
+[data-tone='danger'] { --fui-accent-rgb: var(--fui-danger-rgb); --fui-accent: rgb(var(--fui-accent-rgb)); }
+[data-tone='success'] { --fui-accent-rgb: var(--fui-success-rgb); --fui-accent: rgb(var(--fui-accent-rgb)); }
+[data-tone='muted'] { --fui-accent-rgb: var(--fui-muted-rgb); --fui-accent: rgb(var(--fui-accent-rgb)); }
 
 .fui-root {
   --fui-accent: rgb(var(--fui-accent-rgb));

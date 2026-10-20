@@ -1,4 +1,4 @@
-import './styles/fui.css';
+export { useFuiStyles, fuiStyles } from './core/styles';
 
 export { AnimationProvider, useAnimation, usePrefersReducedMotion } from './core/animation';
 export type { AnimationMode, AnimationSettings, AnimationProviderProps } from './core/animation';

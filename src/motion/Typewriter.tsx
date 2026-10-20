@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAnimation } from '../core/animation';
 import { closestBootDelay } from '../core/boot';
 import { cx } from '../core/hooks';
+import { useFuiStyles } from '../core/styles';
 
 export interface TypewriterProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
   text: string;
@@ -15,6 +16,7 @@ export interface TypewriterProps extends Omit<React.HTMLAttributes<HTMLSpanEleme
 
 /** Character-by-character terminal typing with a block caret. */
 export function Typewriter({ text, speed = 28, startDelay = 0, caret = true, onDone, className, ...rest }: TypewriterProps) {
+  useFuiStyles();
   const { transitions } = useAnimation();
   const ref = useRef<HTMLSpanElement>(null);
   const [count, setCount] = useState(transitions ? 0 : text.length);

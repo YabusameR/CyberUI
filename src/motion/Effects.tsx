@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { cx } from '../core/hooks';
+import { useFuiStyles } from '../core/styles';
 
 export interface ScanlineOverlayProps extends React.HTMLAttributes<HTMLSpanElement> {
   /** 0–1 line opacity. */
@@ -14,6 +15,7 @@ export interface ScanlineOverlayProps extends React.HTMLAttributes<HTMLSpanEleme
 
 /** CRT / hologram scanlines. Place inside a positioned container. */
 export function ScanlineOverlay({ intensity = 0.35, sweep = true, sweepDuration = 7, fixed, className, style, ...rest }: ScanlineOverlayProps) {
+  useFuiStyles();
   return (
     <span
       className={cx('fui-scanlines', fixed && 'fui-scanlines--fixed', className)}
@@ -32,6 +34,7 @@ export interface HolographicFlickerProps extends React.HTMLAttributes<HTMLDivEle
 
 /** Irregular 1–3% alpha flicker of a projected hologram. */
 export function HolographicFlicker({ as: Tag = 'div', className, ...rest }: HolographicFlickerProps) {
+  useFuiStyles();
   return <Tag className={cx('fui-flicker', className)} {...rest} />;
 }
 
@@ -47,6 +50,7 @@ export interface GlitchBoxProps extends React.HTMLAttributes<HTMLDivElement> {
 
 /** Geometric displacement + chromatic split for errors and hovers. */
 export function GlitchBox({ trigger = 'hover', active = false, burst, intensity = 'low', className, ...rest }: GlitchBoxProps) {
+  useFuiStyles();
   const [on, setOn] = useState(active);
   useEffect(() => {
     setOn(active);

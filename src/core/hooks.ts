@@ -48,7 +48,7 @@ export function useAnimatedNumber(target: number, { duration = 800, enabled = tr
   return value;
 }
 
-/** Element size via ResizeObserver. */
+/** Border-box size (padding included) via ResizeObserver. */
 export function useElementSize<T extends Element>() {
   const ref = useRef<T>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -56,10 +56,13 @@ export function useElementSize<T extends Element>() {
     const el = ref.current;
     if (!el) return;
     const ro = new ResizeObserver(([entry]) => {
-      const { width, height } = entry.contentRect;
+      const box = entry.borderBoxSize?.[0];
+      const rect = box ? null : el.getBoundingClientRect();
+      const width = box ? box.inlineSize : rect!.width;
+      const height = box ? box.blockSize : rect!.height;
       setSize((s) => (s.width === width && s.height === height ? s : { width, height }));
     });
-    ro.observe(el);
+    ro.observe(el, { box: 'border-box' });
     return () => ro.disconnect();
   }, []);
   return [ref, size] as const;

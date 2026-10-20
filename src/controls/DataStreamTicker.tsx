@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useBootStep } from '../core/boot';
 import { cx } from '../core/hooks';
+import { useFuiStyles } from '../core/styles';
 
 export interface DataStreamTickerProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Seed lines (vertical) or the marquee content (horizontal). */
+  /**
+   * Lines to show (vertical) or the marquee content (horizontal).
+   * Without `generate`, vertical mode is controlled: append to `items` to push new lines.
+   */
   items?: string[];
-  /** Produces a new line every `interval` ms (vertical mode). */
+  /** Produces a new line every `interval` ms (vertical mode, uncontrolled). */
   generate?: () => string;
   interval?: number;
   maxLines?: number;
@@ -34,10 +38,11 @@ export function DataStreamTicker({
   style,
   ...rest
 }: DataStreamTickerProps) {
+  useFuiStyles();
   const ref = useRef<HTMLDivElement>(null);
   const boot = useBootStep(ref);
   const seq = useRef(0);
-  const [lines, setLines] = useState(() =>
+  const [generated, setGenerated] = useState(() =>
     items.slice(-maxLines).map((text) => ({ id: seq.current++, text, time: stamp(), fresh: false })),
   );
   const gen = useRef(generate);
@@ -48,12 +53,23 @@ export function DataStreamTicker({
     const id = setInterval(() => {
       const text = gen.current?.();
       if (text == null) return;
-      setLines((prev) => [...prev, { id: seq.current++, text, time: stamp(), fresh: true }].slice(-maxLines));
+      setGenerated((prev) => [...prev, { id: seq.current++, text, time: stamp(), fresh: true }].slice(-maxLines));
     }, interval);
     return () => clearInterval(id);
     // `generate` identity is tracked through the ref.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [direction, interval, maxLines, !!generate]);
+
+  // Controlled mode: lines appended after mount slide in; timestamps are taken on arrival.
+  const initialCount = useRef(items.length);
+  const times = useRef<string[]>([]);
+  const lines = generate
+    ? generated
+    : items.slice(-maxLines).map((text, i) => {
+        const index = items.length - Math.min(items.length, maxLines) + i;
+        times.current[index] ??= stamp();
+        return { id: index, text, time: times.current[index], fresh: index >= initialCount.current };
+      });
 
   if (direction === 'horizontal') {
     const content = items.join('   ///   ');

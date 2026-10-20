@@ -3,6 +3,7 @@ import { useAnimation } from '../core/animation';
 import { FuiSound, playSound } from '../core/audio';
 import { useBootStep } from '../core/boot';
 import { cx } from '../core/hooks';
+import { useFuiStyles } from '../core/styles';
 
 export type CyberButtonVariant = 'cyan' | 'magenta' | 'amber' | 'danger' | 'ghost';
 
@@ -33,6 +34,7 @@ export function CyberButton({
   type = 'button',
   ...rest
 }: CyberButtonProps) {
+  useFuiStyles();
   const ref = useRef<HTMLButtonElement>(null);
   const boot = useBootStep(ref);
   const { transitions, sound } = useAnimation();

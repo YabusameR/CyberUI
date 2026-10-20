@@ -14,8 +14,29 @@ npm run build:demo  # dist-demo/ に静的デモを出力
 
 ```tsx
 import { FuiGridProvider, HudFrame, CyberButton } from '@fui-ui/react';
-import '@fui-ui/react/styles.css';
+
+export function Panel() {
+  return (
+    <FuiGridProvider theme="cyan" animationMode="balanced">
+      <HudFrame className="p-6" animatedBorder>
+        <CyberButton variant="danger" soundOnClick onClick={() => console.log('override')}>
+          EMERGENCY OVERRIDE
+        </CyberButton>
+      </HudFrame>
+    </FuiGridProvider>
+  );
+}
 ```
+
+スタイルはコンポーネントの初回描画時に自動で `<head>` に注入されるため、CSSのimportは不要です。
+SSRで初回HTMLに含めたい場合は `fuiStyles`（CSS文字列）を `<style>` に出力するか、`@fui-ui/react/styles.css` を読み込んでください。
+
+## サンプル（demo/）
+ブラウザの実測値を表示する **Runtime Monitor** です。
+- FPS・最悪フレーム時間（rAFで実測）、ストレステストで劣化を再現
+- 自オリジンへのレイテンシ計測（レーダーに12サンプルを表示）、オンライン/オフライン検知
+- JSヒープ・DOMノード数、ページロードのナビゲーションタイミング
+- Long Task・タブ切替・設定変更などの実イベントログ（`DataStreamTicker` の controlled モード）
 
 ## アニメーションモード
 

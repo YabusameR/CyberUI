@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useBootStep } from '../core/boot';
 import { cx } from '../core/hooks';
+import { useFuiStyles } from '../core/styles';
 
 export type StatusKind = 'ONLINE' | 'OFFLINE' | 'WARNING' | 'ERROR' | 'STANDBY' | 'SCANNING';
 
@@ -23,6 +24,7 @@ export interface StatusBadgeProps extends React.HTMLAttributes<HTMLSpanElement> 
 
 /** LED status indicator. */
 export function StatusBadge({ status, pulse = false, label, className, style, ...rest }: StatusBadgeProps) {
+  useFuiStyles();
   const ref = useRef<HTMLSpanElement>(null);
   const boot = useBootStep(ref);
   return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAnimation } from '../core/animation';
 import { cx, useAnimatedNumber } from '../core/hooks';
+import { useFuiStyles } from '../core/styles';
 
 export interface AnimatedNumberProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
   value: number;
@@ -14,6 +15,7 @@ export interface AnimatedNumberProps extends Omit<React.HTMLAttributes<HTMLSpanE
 
 /** Count up/down on a monospaced face so digits never jitter. */
 export function AnimatedNumber({ value, decimals = 0, pad = 0, duration = 800, prefix = '', suffix = '', className, ...rest }: AnimatedNumberProps) {
+  useFuiStyles();
   const { transitions } = useAnimation();
   const v = useAnimatedNumber(value, { duration, enabled: transitions });
   const [int, frac] = Math.abs(v).toFixed(decimals).split('.');

@@ -2,6 +2,7 @@ import React, { useId, useRef } from 'react';
 import { useAnimation } from '../core/animation';
 import { useBootStep } from '../core/boot';
 import { cx, useAnimatedNumber } from '../core/hooks';
+import { useFuiStyles } from '../core/styles';
 
 export interface CircularGaugeProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   value: number;
@@ -39,6 +40,7 @@ export function CircularGauge({
   style,
   ...rest
 }: CircularGaugeProps) {
+  useFuiStyles();
   const ref = useRef<HTMLDivElement>(null);
   const boot = useBootStep(ref);
   const { transitions } = useAnimation();
@@ -101,7 +103,7 @@ export function CircularGauge({
           </g>
         )}
         <g className="fui-gauge__needle" style={{ transform: `rotate(${START + SWEEP * p}deg)` }}>
-          <line x1={c + r - 34} y1={c} x2={c + r + 4} y2={c} />
+          <line x1={c + r - 12} y1={c} x2={c + r + 6} y2={c} />
         </g>
         <circle className="fui-gauge__hub" cx={c} cy={c} r={3} />
       </svg>

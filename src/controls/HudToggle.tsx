@@ -3,6 +3,7 @@ import { useAnimation } from '../core/animation';
 import { playSound } from '../core/audio';
 import { cx } from '../core/hooks';
 import type { FuiTone } from '../layout/HudFrame';
+import { useFuiStyles } from '../core/styles';
 
 export interface HudToggleProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
   checked?: boolean;
@@ -29,6 +30,7 @@ export function HudToggle({
   onClick,
   ...rest
 }: HudToggleProps) {
+  useFuiStyles();
   const [inner, setInner] = useState(defaultChecked);
   const isOn = checked ?? inner;
   const { sound } = useAnimation();

@@ -1,6 +1,7 @@
 import React, { createContext, useContext } from 'react';
 import { AnimationMode, AnimationProvider, useAnimation } from './animation';
 import { cx } from './hooks';
+import { useFuiStyles } from './styles';
 
 export type FuiTheme = 'cyan' | 'magenta' | 'amber';
 export type AspectRatio = '16:9' | '21:9' | '4:3' | 'auto';
@@ -49,6 +50,7 @@ export function FuiGridProvider({
   sound = true,
   ...rest
 }: FuiGridProviderProps) {
+  useFuiStyles();
   return (
     <AnimationProvider mode={animationMode} respectReducedMotion={respectReducedMotion} sound={sound}>
       <FuiSettingsContext.Provider value={{ theme, aspectRatio }}>

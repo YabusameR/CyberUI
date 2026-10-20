@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useBootStep } from '../core/boot';
 import { cx } from '../core/hooks';
+import { useFuiStyles } from '../core/styles';
 
 export interface RadarBlip {
   id?: string | number;
@@ -23,6 +24,7 @@ export interface HudRadarProps extends React.HTMLAttributes<HTMLDivElement> {
 
 /** 360° radar with rotating sweep; blips light up as the beam passes. */
 export function HudRadar({ size = 260, blips = [], sweepDuration = 4, rings = 4, label, className, style, ...rest }: HudRadarProps) {
+  useFuiStyles();
   const ref = useRef<HTMLDivElement>(null);
   const boot = useBootStep(ref);
   const c = size / 2;

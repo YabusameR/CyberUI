@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useRef } from 'react';
 import { useBootStep } from '../core/boot';
 import { cx } from '../core/hooks';
+import { useFuiStyles } from '../core/styles';
 
 type Gap = 'none' | 'sm' | 'md' | 'lg' | number;
 type Breakpoint = 'base' | 'sm' | 'md' | 'lg' | 'xl';
@@ -21,6 +22,7 @@ export interface FuiGridProps extends React.HTMLAttributes<HTMLDivElement> {
 
 /** 12-column responsive SF grid. */
 export function FuiGrid({ cols = 12, gap = 'md', showGridLines, crosshairs = false, className, style, children, ...rest }: FuiGridProps) {
+  useFuiStyles();
   const gapValue = typeof gap === 'number' ? `${gap}px` : GAPS[gap];
   return (
     <GridContext.Provider value={{ crosshairs, cols }}>
@@ -60,6 +62,7 @@ export interface FuiColProps extends React.HTMLAttributes<HTMLDivElement> {
 
 /** Plain grid column without decorations. */
 export function FuiCol({ span, offset, rowSpan, className, style, ...rest }: FuiColProps) {
+  useFuiStyles();
   return (
     <div
       className={cx('fui-col', className)}
@@ -86,6 +89,7 @@ export interface FuiGridItemProps extends Omit<React.HTMLAttributes<HTMLElement>
 
 /** Grid section with guide lines, corner reticles and a coordinate tag. */
 export function FuiGridItem({ span, rowSpan, coordinate, label, className, style, children, ...rest }: FuiGridItemProps) {
+  useFuiStyles();
   const { crosshairs } = useContext(GridContext);
   const ref = useRef<HTMLElement>(null);
   const boot = useBootStep(ref);

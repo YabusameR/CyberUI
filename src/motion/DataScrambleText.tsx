@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useAnimation } from '../core/animation';
 import { closestBootDelay } from '../core/boot';
 import { cx } from '../core/hooks';
+import { useFuiStyles } from '../core/styles';
 
 export const SCRAMBLE_CHARSET = '0123456789ABCDEF!@#$%^&*';
 
@@ -34,6 +35,7 @@ export function DataScrambleText({
   onMouseEnter,
   ...rest
 }: DataScrambleTextProps) {
+  useFuiStyles();
   const { transitions } = useAnimation();
   const ref = useRef<HTMLElement>(null);
   const raf = useRef(0);

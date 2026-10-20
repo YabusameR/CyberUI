@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useBootStep } from '../core/boot';
 import { cx } from '../core/hooks';
 import type { FuiTone } from './HudFrame';
+import { useFuiStyles } from '../core/styles';
 
 export interface HolographicPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Irregular 1–3% alpha flicker. */
@@ -15,6 +16,7 @@ export interface HolographicPanelProps extends React.HTMLAttributes<HTMLDivEleme
 
 /** Translucent frosted card with holographic shimmer. */
 export function HolographicPanel({ flickerEffect, scanlines, glass = true, tone, className, style, children, ...rest }: HolographicPanelProps) {
+  useFuiStyles();
   const ref = useRef<HTMLDivElement>(null);
   const boot = useBootStep(ref);
   return (
