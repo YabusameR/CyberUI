@@ -12,6 +12,12 @@ npm run build       # dist/ にライブラリ (ESM + CSS + 型定義) を出力
 npm run build:demo  # dist-demo/ に静的デモを出力
 ```
 
+npm 未公開のため、ほかのプロジェクトからは GitHub を指定してインストールします。インストール時に `prepare` スクリプトでビルドされ、`dist/` が入ります。
+
+```bash
+npm install github:YabusameR/CyberUI#<コミットのハッシュ>
+```
+
 ```tsx
 import { FuiGridProvider, HudFrame, CyberButton } from '@fui-ui/react';
 
