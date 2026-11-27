@@ -20,17 +20,22 @@ export interface StatusBadgeProps extends React.HTMLAttributes<HTMLSpanElement> 
   pulse?: boolean;
   /** Override the displayed text (defaults to the status). */
   label?: React.ReactNode;
+  /**
+   * Announce changes to screen readers (`role="status"`). Off by default: a badge that never changes should not
+   * be a live region, and a page full of them makes each update noisy.
+   */
+  live?: boolean;
 }
 
 /** LED status indicator. */
-export function StatusBadge({ status, pulse = false, label, className, style, ...rest }: StatusBadgeProps) {
+export function StatusBadge({ status, pulse = false, label, live = false, className, style, ...rest }: StatusBadgeProps) {
   useFuiStyles();
   const ref = useRef<HTMLSpanElement>(null);
   const boot = useBootStep(ref);
   return (
     <span
       ref={ref}
-      role="status"
+      role={live ? 'status' : undefined}
       className={cx('fui-badge', className)}
       data-tone={TONE[status]}
       data-pulse={pulse && status !== 'OFFLINE' ? '' : undefined}

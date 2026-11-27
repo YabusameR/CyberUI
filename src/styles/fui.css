@@ -48,6 +48,10 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* the parts the browser draws: selection and scrollbars take the accent */
+.fui-root ::selection { background: rgb(var(--fui-accent-rgb) / 0.35); color: #fff; }
+.fui-root { scrollbar-color: rgb(var(--fui-accent-rgb) / 0.4) transparent; }
+
 .fui-sr-only {
   position: absolute !important;
   width: 1px;
@@ -340,7 +344,8 @@
   margin-left: 2px;
   vertical-align: -0.12em;
   background: var(--fui-accent);
-  animation: fui-blink 1s steps(1) infinite;
+  /* five blinks, then it stays lit: blinking content has to stop within 5 s (WCAG 2.2.2) */
+  animation: fui-blink 1s steps(1) 5;
 }
 
 /* ==========================================================================
@@ -393,10 +398,10 @@
   transform: translateX(-120%);
 }
 .fui-btn__label { position: relative; }
-.fui-btn:hover { color: color-mix(in srgb, var(--fui-accent) 40%, #fff); text-shadow: 0 0 8px rgb(var(--fui-accent-rgb) / 0.9); }
-.fui-btn:hover .fui-btn__bg { background-color: var(--fui-accent); }
-.fui-btn--sweep:hover .fui-btn__sweep { animation: fui-sweep 0.7s var(--fui-ease); }
-.fui-btn:active { transform: scale(0.98); }
+.fui-btn:is(:hover, :focus-visible):not(:disabled) { color: color-mix(in srgb, var(--fui-accent) 40%, #fff); text-shadow: 0 0 8px rgb(var(--fui-accent-rgb) / 0.9); }
+.fui-btn:is(:hover, :focus-visible):not(:disabled) .fui-btn__bg { background-color: var(--fui-accent); }
+.fui-btn--sweep:hover:not(:disabled) .fui-btn__sweep { animation: fui-sweep 0.7s var(--fui-ease); }
+.fui-btn:active:not(:disabled) { transform: scale(0.98); }
 .fui-btn:disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(0.6); }
 .fui-btn[data-tone='ghost'] .fui-btn__bg { background: rgb(var(--fui-accent-rgb) / 0.25); }
 .fui-btn[data-tone='ghost'] .fui-btn__bg::before { background: rgb(var(--fui-bg-rgb) / 0.6); }
@@ -459,7 +464,8 @@
 .fui-toggle[data-on] .fui-toggle__thumb { transform: translateX(24px); background: var(--fui-accent); box-shadow: 0 0 10px rgb(var(--fui-accent-rgb) / 0.8); }
 .fui-toggle__state { min-width: 3ch; font-family: var(--fui-font-mono); font-size: 11px; color: rgb(var(--fui-muted-rgb)); }
 .fui-toggle[data-on] .fui-toggle__state { color: var(--fui-accent); }
-.fui-toggle:focus-visible .fui-toggle__track { outline: 1px dashed var(--fui-accent); outline-offset: 3px; }
+.fui-toggle:focus-visible .fui-toggle__track { outline: 2px dashed var(--fui-accent); outline-offset: 3px; }
+.fui-toggle:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* ==========================================================================
    StatusBadge
@@ -514,6 +520,8 @@
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
 .fui-ticker__track { display: inline-flex; animation: fui-marquee var(--fui-ticker-speed, 30s) linear infinite; will-change: transform; }
+/* moving content needs a way to stop it (WCAG 2.2.2): pointing at it or focusing it holds the marquee */
+.fui-ticker--h:is(:hover, :focus-within) .fui-ticker__track { animation-play-state: paused; }
 .fui-ticker[data-fui-booting] {
   animation: fui-fade-in 0.4s ease-out backwards;
   animation-delay: var(--fui-boot-delay);
@@ -588,8 +596,8 @@
 .fui-radar__blip em {
   position: absolute;
   left: 11px;
-  top: -3px;
-  font: normal 9px/1 var(--fui-font-mono);
+  top: -4px;
+  font: normal 10px/1 var(--fui-font-mono);
   letter-spacing: 0.1em;
   white-space: nowrap;
   color: inherit;
@@ -643,6 +651,15 @@
 .fui-root[data-fui-motion='reduced-motion'] .fui-btn:active { transform: none; }
 .fui-root[data-fui-motion='reduced-motion'] .fui-btn__reticle i { transform: none; }
 .fui-root[data-fui-motion='reduced-motion'] :is(.fui-gauge__sweep, .fui-radar__sweep, .fui-scanlines__sweep, .fui-frame__runner) { display: none; }
+
+/* Forced colours (Windows contrast themes): backgrounds drawn with clip-path disappear and `outline: none`
+   leaves no focus at all, so controls get a system-coloured edge and outline. */
+@media (forced-colors: active) {
+  .fui-btn { border: 1px solid ButtonText; }
+  .fui-btn:focus-visible, .fui-toggle:focus-visible { outline: 2px solid Highlight; outline-offset: 2px; }
+  .fui-toggle__track { border-color: ButtonText; }
+  .fui-toggle[data-on] .fui-toggle__thumb { background: Highlight; }
+}
 
 /* Safety net: honour the OS setting even outside a provider. */
 @media (prefers-reduced-motion: reduce) {

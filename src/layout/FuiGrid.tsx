@@ -78,7 +78,7 @@ export function FuiCol({ span, offset, rowSpan, className, style, ...rest }: Fui
   );
 }
 
-export interface FuiGridItemProps extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {
+export interface FuiGridItemProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   span?: ResponsiveSpan;
   rowSpan?: number;
   /** Coordinate tag, rendered as `[SEC-01:A]`. */
@@ -87,15 +87,19 @@ export interface FuiGridItemProps extends Omit<React.HTMLAttributes<HTMLElement>
   label?: React.ReactNode;
 }
 
-/** Grid section with guide lines, corner reticles and a coordinate tag. */
+/**
+ * Grid section with guide lines, corner reticles and a coordinate tag. A labelled item is a named group, not a
+ * `<section>` landmark: a dashboard of eight panels would otherwise put eight regions in the landmark list.
+ */
 export function FuiGridItem({ span, rowSpan, coordinate, label, className, style, children, ...rest }: FuiGridItemProps) {
   useFuiStyles();
   const { crosshairs } = useContext(GridContext);
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const boot = useBootStep(ref);
   return (
-    <section
+    <div
       ref={ref}
+      role={coordinate || label ? 'group' : undefined}
       className={cx('fui-grid-item', className)}
       aria-label={typeof label === 'string' ? label : coordinate}
       {...boot.props}
@@ -118,6 +122,6 @@ export function FuiGridItem({ span, rowSpan, coordinate, label, className, style
         </span>
       )}
       <div className="fui-grid-item__body">{children}</div>
-    </section>
+    </div>
   );
 }
