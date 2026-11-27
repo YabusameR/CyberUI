@@ -5,16 +5,22 @@ import { cx } from '../core/hooks';
 import type { FuiTone } from '../layout/HudFrame';
 import { useFuiStyles } from '../core/styles';
 
-export interface HudToggleProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
+interface HudToggleBase extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
   checked?: boolean;
   defaultChecked?: boolean;
   onChange?: (checked: boolean) => void;
-  label?: React.ReactNode;
   onLabel?: string;
   offLabel?: string;
   sound?: boolean;
   tone?: FuiTone;
 }
+
+/**
+ * A switch needs a name: the ON/OFF text is decoration (the state is read from `aria-checked`), so without a
+ * `label` a screen reader would announce a nameless switch. Pass `label`, or `aria-label` / `aria-labelledby`.
+ */
+export type HudToggleProps = HudToggleBase &
+  ({ label: React.ReactNode } | { label?: undefined; 'aria-label': string } | { label?: undefined; 'aria-labelledby': string });
 
 /** Accessible switch (`role="switch"`) styled as a HUD toggle. */
 export function HudToggle({

@@ -1,4 +1,4 @@
-import React, { useId, useRef } from 'react';
+import React, { useId, useMemo, useRef } from 'react';
 import { useAnimation } from '../core/animation';
 import { useBootStep } from '../core/boot';
 import { cx, useAnimatedNumber } from '../core/hooks';
@@ -55,13 +55,19 @@ export function CircularGauge({
   const [ex, ey] = pt(START + SWEEP, r);
   const arc = `M${sx},${sy} A${r},${r} 0 1 1 ${ex},${ey}`;
 
-  const ticks = Array.from({ length: 55 }, (_, i) => {
-    const deg = START + (SWEEP / 54) * i;
-    const major = i % 9 === 0;
-    const [x1, y1] = pt(deg, r + 9);
-    const [x2, y2] = pt(deg, r + (major ? 19 : 14));
-    return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} className={major ? 'fui-gauge__tick--major' : 'fui-gauge__tick'} />;
-  });
+  // the tick ring depends only on the size: built once, not on every frame of the needle's ease
+  const ticks = useMemo(
+    () =>
+      Array.from({ length: 55 }, (_, i) => {
+        const deg = START + (SWEEP / 54) * i;
+        const major = i % 9 === 0;
+        const [x1, y1] = pt(deg, r + 9);
+        const [x2, y2] = pt(deg, r + (major ? 19 : 14));
+        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} className={major ? 'fui-gauge__tick--major' : 'fui-gauge__tick'} />;
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [size],
+  );
 
   let tone: string | undefined;
   if (thresholds) {
@@ -77,6 +83,7 @@ export function CircularGauge({
       aria-valuemin={min}
       aria-valuemax={max}
       aria-valuenow={value}
+      aria-valuetext={`${value.toFixed(decimals)} ${unit}`}
       aria-label={label}
       className={cx('fui-gauge', className)}
       data-tone={tone}

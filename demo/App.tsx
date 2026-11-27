@@ -171,7 +171,7 @@ function Monitor(props: MonitorProps) {
               <div className="flex flex-wrap items-center gap-3">
                 <MotionReadout />
                 <Clock />
-                <StatusBadge status={health} label={healthText} pulse />
+                <StatusBadge status={health} label={healthText} pulse live />
               </div>
             </div>
           </FuiGridItem>
@@ -238,7 +238,7 @@ function Monitor(props: MonitorProps) {
           {/* Detail panels */}
           <FuiGridItem span={{ md: 6, lg: 4 }} coordinate="NET-01" label="NETWORK">
             <HolographicPanel className="p-4 h-full flex flex-col gap-4">
-              <StatusBadge status={net.online ? 'ONLINE' : 'OFFLINE'} pulse={net.online} className="self-start" />
+              <StatusBadge status={net.online ? 'ONLINE' : 'OFFLINE'} pulse={net.online} live className="self-start" />
               <dl className="grid grid-cols-2 gap-x-4 gap-y-3 m-0">
                 <Stat label="LAST PING">{lastPing !== undefined ? <AnimatedNumber value={lastPing} suffix=" ms" /> : '—'}</Stat>
                 <Stat label="AVG (12)">{pings.length ? <AnimatedNumber value={avgPing} suffix=" ms" /> : '—'}</Stat>

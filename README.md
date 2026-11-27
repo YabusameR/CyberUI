@@ -82,8 +82,15 @@ SSRで初回HTMLに含めたい場合は `fuiStyles`（CSS文字列）を `<styl
 
 ## アクセシビリティ
 - `DataScrambleText` / `Typewriter` / `AnimatedNumber` は、スクリーンリーダー向けに最終値のみを読み上げ、アニメーション中の文字は `aria-hidden` にしています。
-- `HudToggle` は `role="switch"`、`CircularGauge` は `role="meter"`、`StatusBadge` は `role="status"`、`DataStreamTicker` は `role="log"`（`live` 指定で読み上げ）。
-- `CyberButton` はキーボードフォーカス時（`:focus-visible`）にターゲットレティクルを表示します。
+- `HudToggle` は `role="switch"`。ON/OFF の文字は飾りで状態は `aria-checked` で伝えるため、**`label` か `aria-label` / `aria-labelledby` が必須**です（型で必須にしています）。
+- `CircularGauge` は `role="meter"`。`aria-valuetext` で単位付きの値（例：`60 fps`）を読み上げます。名前は `label` から付きます。
+- `StatusBadge` は `live` を付けたときだけ `role="status"`（変化を読み上げるライブリージョン）になります。変わらないバッジはライブリージョンにしません。
+- `DataStreamTicker` は縦型が `role="log"`（`live` 指定で読み上げ）。横に流れる型はポインタを乗せるかフォーカスすると止まります（WCAG 2.2.2：動き続けるものは止められること）。
+- `FuiGridItem` は `coordinate` か `label` があるとき、その名前の付いたグループ（`role="group"`）になります。ランドマーク（`<section>`）にはしないので、パネルが多くてもランドマーク一覧が埋まりません。
+- `Typewriter` のカーソルは 5 回点滅したら点灯したままになります（WCAG 2.2.2：点滅は 5 秒以内に止める）。
+- `CyberButton` はキーボードフォーカス時（`:focus-visible`）にターゲットレティクルを出し、ホバーと同じく枠が光ります。無効（`disabled`）のときはホバーにも反応しません。
+- Windows のコントラストテーマ（`forced-colors: active`）では、ボタンとトグルにシステム色の枠とフォーカス枠を付けます（`clip-path` で描いた背景はこのモードで消えるため）。
+- 文字選択とスクロールバーはアクセント色になります。
 
 ## 効果音
 Web Audio API の `AudioContext` で正弦波・矩形波・ノイズをその場で合成するため、音声ファイルは不要です。
